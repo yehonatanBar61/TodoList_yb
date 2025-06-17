@@ -1,0 +1,8 @@
+.list-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;       /* full height of the screen */
+    width: 100vw;        /* full width of the screen */
+    box-sizing: border-box;
+}
