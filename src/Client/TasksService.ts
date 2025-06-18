@@ -2,7 +2,7 @@ import type { Task } from "../Objects/Task";
 import type { CrudRemoteService } from "./CrudRemoteService";
 import { AxiosCrudService } from "./AxiosCrudService";
 
-class TaskService{
+export class TaskService{
     crudService : CrudRemoteService<Task>;
 
     constructor(endPpoint : string){

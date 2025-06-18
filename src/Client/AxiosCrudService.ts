@@ -19,7 +19,6 @@ export class AxiosCrudService<T> implements CrudRemoteService<T> {
             }
         );
     }
-    
 
     async getAll(): Promise<T[]> {
         const res = await this.http.get<T[]>('/');
