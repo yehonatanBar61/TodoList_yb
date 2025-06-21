@@ -26,7 +26,7 @@ export class TaskService{
         return this.crudService.update(id, updates);
     }
 
-    deleteTask(id: string): Promise<void> {
+    deleteTask(id: string): Promise<boolean> {
         return this.crudService.delete(id);
     }
 }

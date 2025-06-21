@@ -1,0 +1,8 @@
+.main-container{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color: aquamarine;
+    padding-top: 50px;
+}
+

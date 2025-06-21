@@ -8,7 +8,8 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogContentText
+  DialogContentText,
+  Alert
 } from "@mui/material";
 import { useState } from "react";
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -36,18 +37,17 @@ export default function BasicTodoItem({
       <ListItem
         key={todo.id}
         disablePadding
+        divider
         secondaryAction={
           <IconButton
             aria-label="delete"
-            size="small"
             onClick={onDeleteAction(todo.id)}
           >
             <DeleteIcon fontSize="inherit" />
           </IconButton>
         }
       >
-        <ListItemButton role={undefined} dense onClick={handleOpen}>
-          <ListItemIcon>
+        <ListItemIcon>
             <Checkbox
               edge="start"
               checked={checked.includes(todo.id)}
@@ -60,6 +60,7 @@ export default function BasicTodoItem({
               inputProps={{ 'aria-labelledby': labelId }}
             />
           </ListItemIcon>
+        <ListItemButton role={undefined} dense onClick={handleOpen}>
           <ListItemText id={labelId} primary={todo.title} />
         </ListItemButton>
       </ListItem>

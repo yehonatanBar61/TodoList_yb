@@ -1,16 +1,18 @@
 import * as React from 'react';
 import List from '@mui/material/List';
-import '../../Style/BasicRowList.css'
+import '../../Style/BasicTodoList/BasicTodoList.css';
 import { TaskService } from '../../Client/TasksService';
 import type { Task } from '../../Objects/Task';
 import BasicTodoItem from './BasicTodoItem';
 import BasicAddTaskItem from './BasicAddTaskItem';
+import { useAlert } from '../Notifications/UseAlert';
 
 const crud = new TaskService("http://localhost:8080/todos"); //todo : move to consts / vars file
 
 export default function BasicRowList() {
   const [checked, setChecked] = React.useState<string[]>([]);
   const [tasks, setTasks] = React.useState<Task[]>([]);
+  const { showAlert } = useAlert();
 
   React.useEffect(() => {
     crud.getAllTasks()
@@ -31,13 +33,18 @@ export default function BasicRowList() {
     setChecked(newChecked);
   };
 
-  const onDeleteAction = (id : string) => () => {
-    crud.deleteTask(id);
-    const updatedTasks = tasks.filter(task => task.id !== id);
-    setTasks(updatedTasks);
+  const onDeleteAction = (id : string) => async () => {
+    const result: boolean = await crud.deleteTask(id);
+
+    if (result) {
+      showAlert('Success', 'Task deletion succeeded');
+      const updatedTasks = tasks.filter(task => task.id !== id);
+      setTasks(updatedTasks);
+    } else {
+      showAlert('Error', 'Task deletion failed');
+    }
   }
 
-  
   const addTask = (task : Task) => () => {
     crud.createTask(task);
     setTasks([...tasks, task]);
@@ -45,6 +52,9 @@ export default function BasicRowList() {
 
   return (
     <section className='list-container'>
+      <div className="list-controller">
+                <h3>Tasks</h3>
+      </div>
       <List className='task-list'>
         {tasks.map((task) => {
           return (

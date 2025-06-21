@@ -1,12 +1,19 @@
-import ButtonAppBar from "./Components/AppBar"
-import BasicRowList from "./Components/BasicTodoList/BasicTodoList"
+import { AlertProvider } from "./Components/Notifications/AlertProvider"
+import Layout from "./Components/AppBarLayout"
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import BasicListPage from "./Pages/BasicListPage";
 
 function App() {
   return (
-    <>
-       <ButtonAppBar />
-       <BasicRowList/>
-    </>
+    <Router>
+      <AlertProvider>
+        <Layout>
+          <Routes>
+            <Route path="/" element={<BasicListPage />} />
+          </Routes>
+        </Layout>
+      </AlertProvider>
+    </Router>
   )
 }
 
