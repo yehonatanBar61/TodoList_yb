@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import AddIcon from '@mui/icons-material/Add';
 
 
-export default function BasicAddTaskItem({addTask} : {addTask : (task : Task) => () => void}) {
+export default function BasicAddTaskItem({addTask} : {addTask : (task : Task) => void}) {
   const [description, setDescription] = useState('');
   const [openDialog, setOpenDialog] = useState(false);
   const [title, setTitle] = useState('');
@@ -29,7 +29,7 @@ export default function BasicAddTaskItem({addTask} : {addTask : (task : Task) =>
       completed : false
     };
 
-    addTask(newTask)();
+    addTask(newTask);
     setDescription('');
     setTitle('');
     setOpenDialog(false);

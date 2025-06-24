@@ -80,9 +80,15 @@ export default function BasicRowList() {
     }
   }
 
-  const addTask = (task : Task) => () => {
-    crud.createTask(task);
-    setTasks([...tasks, task]);
+  const addTask = async (task : Task) => {
+    const result : Task = await crud.createTask(task);
+    if(result.id.length !== 0){
+      showAlert("Success", "Adding task completed");
+      setTasks([...tasks, task]);
+    }else {
+      showAlert("Error", "Adding task Failed");
+    }
+    
   }
 
   return (
