@@ -1,6 +1,6 @@
 import { Fade } from "@mui/material";
 import Alert from "@mui/material/Alert";
-import React, { createContext, useEffect, useState, type ReactNode } from "react";
+import React, { createContext, useState, type ReactNode } from "react";
 
 type AlertType = 'Success' | 'Error' | 'Warning';
 
@@ -46,7 +46,6 @@ export const AlertProvider: React.FC<AlertContextProvider> = ({ children }) => {
         if(prev.length > 1){
           updated.pop();
           updated.unshift(alertMessage);
-          console.log(updated);
         }else{
           updated = [alertMessage, ...prev];
         }

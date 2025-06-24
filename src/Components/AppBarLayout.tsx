@@ -30,7 +30,7 @@ export default function Layout({ children } : {children : React.ReactNode}) {
         </AppBar>
       </Box>
 
-      <Box component={"main"} sx={{p: 2}}>{children}</Box>
+      <Box component={"main"} sx={{p: 0}}>{children}</Box>
 
       <footer>this is my app and inly my</footer>
     </>
