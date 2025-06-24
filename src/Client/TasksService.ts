@@ -2,7 +2,7 @@ import type { Task } from "../Objects/Task";
 import type { CrudRemoteService } from "./CrudRemoteService";
 import { AxiosCrudService } from "./AxiosCrudService";
 
-class TaskService{
+export class TaskService{
     crudService : CrudRemoteService<Task>;
 
     constructor(endPpoint : string){
@@ -26,7 +26,7 @@ class TaskService{
         return this.crudService.update(id, updates);
     }
 
-    deleteTask(id: string): Promise<void> {
+    deleteTask(id: string): Promise<boolean> {
         return this.crudService.delete(id);
     }
 }

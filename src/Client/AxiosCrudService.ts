@@ -19,7 +19,6 @@ export class AxiosCrudService<T> implements CrudRemoteService<T> {
             }
         );
     }
-    
 
     async getAll(): Promise<T[]> {
         const res = await this.http.get<T[]>('/');
@@ -41,8 +40,9 @@ export class AxiosCrudService<T> implements CrudRemoteService<T> {
         return res.data;
     }
 
-    async delete(id: string): Promise<void> {
-        await this.http.delete(`/${id}`);
+    async delete(id: string): Promise<boolean> {
+        const responseStatus = (await this.http.delete(`/${id}`)).status;
+        return responseStatus === 204 || responseStatus === 200;
     }
 
   private handleError(response: AxiosResponse): Promise<never> {

@@ -1,0 +1,30 @@
+.list-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  height: 90vh;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.task-list {
+  width: 80%;
+  background-color: white;
+}
+
+.content-headline {
+  background-color: brown;
+  width: 80%;
+}
+
+.list-controll-pannel{
+  display: flex;
+  justify-content: flex-end;
+  width: 80%;
+  background-color:blue;
+}
+
+.button-group-filter {
+  padding: 10px;
+}
