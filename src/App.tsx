@@ -1,19 +1,27 @@
 import { AlertProvider } from "./Components/Notifications/AlertProvider"
-import Layout from "./Components/AppBarLayout"
+import Layout from "./Layouts/AppBarLayout"
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import BasicListPage from "./Pages/BasicListPage";
+import { useState } from "react";
+import { CssBaseline, ThemeProvider } from "@mui/material";
+import { darkTheme, greenTheme } from "./Style/Themes/GreenTheem";
 
 function App() {
+  const [useGreen, setUseGreen] = useState(true);
+
   return (
-    <Router>
-      <AlertProvider>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<BasicListPage />} />
-          </Routes>
-        </Layout>
-      </AlertProvider>
-    </Router>
+    <ThemeProvider theme={useGreen ? greenTheme : darkTheme}>
+      <CssBaseline />
+      <Router>
+        <AlertProvider>
+          <Layout>
+            <Routes>
+              <Route path="/" element={<BasicListPage />} />
+            </Routes>
+          </Layout>
+        </AlertProvider>
+      </Router>
+    </ThemeProvider>
   )
 }
 

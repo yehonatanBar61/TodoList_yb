@@ -11,8 +11,10 @@ import { Button } from '@mui/material';
 import { useState } from 'react';
 import { Filtering } from '../../Logic/TaskFiltering/Filtering';
 import { FilterRepository } from '../../Logic/TaskFiltering/FilterRepository'
+import Consts from "../../Client/Consts";
+import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 
-const crud = new TaskService("http://localhost:8080/todos"); //todo : move to consts / vars file
+const crud = new TaskService(Consts.REMOTE_HOST_URI);
 const taskFiltering = new Filtering(FilterRepository);
 
 export default function BasicRowList() {
@@ -88,38 +90,65 @@ export default function BasicRowList() {
     }else {
       showAlert("Error", "Adding task Failed");
     }
-    
   }
 
-  return (
-    <section className='list-container'>
-      <div className="content-headline">
-        <h3>Tasks</h3>
-      </div>
-      <div className="list-controll-pannel">
-        <ButtonGroup className='button-group-filter' variant="contained" aria-label="Basic button group">
-          <Button onClick={() => {
-            taskFiltering.clearFilters();
-            setFilteredTasks(tasks);
-          }}>All</Button>
-          <Button onClick={() => {
-            taskFiltering.setFilters(["Completed"]);
-            setFilteredTasks(taskFiltering.applyFilters(tasks));
-          }}>Completed</Button>
-          <Button onClick={() => {
-            taskFiltering.setFilters(["Uncompleted"]);
-            setFilteredTasks(taskFiltering.applyFilters(tasks));
-          }}>Not completed</Button>
-        </ButtonGroup>
-      </div>
-      <List className='task-list'>
-        {filteredTasks.map((task) => {
-          return (
-            <BasicTodoItem todo={task} toggle={toggleTaskComplition} onDeleteAction={onDeleteAction} onEditTask={onEditTask}/>
-          );
-        })}
-        <BasicAddTaskItem addTask={addTask}/>
-      </List>
-    </section>
-  );
-}
+  const deleteAllTasks = async () => {
+    let succeeded = true;
+    let updatedTasks = [...tasks];
+
+    for (const taskToDelete of tasks) {
+      const result = await crud.deleteTask(taskToDelete.id);
+      if (!result) {
+        succeeded = false;
+      }
+      updatedTasks = updatedTasks.filter(task => task.id !== taskToDelete.id);
+    }
+
+    setTasks(updatedTasks);
+
+    if (!succeeded) {
+      showAlert("Error", "Failed to delete all Tasks");
+    } else {
+      showAlert("Success", "Deletion succeeded");
+    }
+  };
+
+    return (
+      <section className='list-container'>
+        <div className="content-headline">
+          <h3>Tasks</h3>
+        </div>
+        <div className="list-controll-pannel">
+          <ButtonGroup className='button-group-delete' variant="contained" aria-label="Basic button group">
+            <Button startIcon={<DeleteForeverOutlinedIcon />}  onClick={() => {
+              deleteAllTasks();
+            }}>
+                Delete All
+            </Button>
+          </ButtonGroup>
+          <ButtonGroup className='button-group-filter' variant="contained" aria-label="Basic button group">
+            <Button onClick={() => {
+              taskFiltering.clearFilters();
+              setFilteredTasks(tasks);
+            }}>All</Button>
+            <Button onClick={() => {
+              taskFiltering.setFilters(["Completed"]);
+              setFilteredTasks(taskFiltering.applyFilters(tasks));
+            }}>Completed</Button>
+            <Button onClick={() => {
+              taskFiltering.setFilters(["Uncompleted"]);
+              setFilteredTasks(taskFiltering.applyFilters(tasks));
+            }}>Not completed</Button>
+          </ButtonGroup>
+        </div>
+        <List className='task-list'>
+          {filteredTasks.map((task) => {
+            return (
+              <BasicTodoItem todo={task} toggle={toggleTaskComplition} onDeleteAction={onDeleteAction} onEditTask={onEditTask}/>
+            );
+          })}
+          <BasicAddTaskItem addTask={addTask}/>
+        </List>
+      </section>
+    );
+  }
