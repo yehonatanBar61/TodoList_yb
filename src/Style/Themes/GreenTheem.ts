@@ -13,9 +13,9 @@ export const greenTheme = createTheme({
 export const darkTheme = createTheme({
   palette: {
     mode: 'light',
-    primary: { main: '#266b12' },
-    secondary: { main: '#0c7c0c' },
-    background: { default: '#266b12', paper: '#0c7c0c' },
-    text: { primary: '#0c7c0c' },
+    primary: { main: '#0c7c0c', contrastText: '#fff' },
+    secondary: { main: '#266b12', contrastText: '#fff' },
+    background: { default: '#f2f2f2', paper: '#0c7c0c' },
+    text: { primary: '#000000' },
   },
 });

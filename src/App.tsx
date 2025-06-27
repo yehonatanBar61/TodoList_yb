@@ -14,7 +14,7 @@ function App() {
       <CssBaseline />
       <Router>
         <AlertProvider>
-          <Layout>
+          <Layout useGreen={useGreen} setUseGreen={setUseGreen}>
             <Routes>
               <Route path="/" element={<BasicListPage />} />
             </Routes>

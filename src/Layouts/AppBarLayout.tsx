@@ -65,7 +65,20 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-export default function Layout({ children } : {children : React.ReactNode}) {
+export default function Layout({
+    children,
+    useGreen,
+    setUseGreen
+  }: {
+    children: React.ReactNode;
+    useGreen: boolean;
+    setUseGreen: React.Dispatch<React.SetStateAction<boolean>>;
+  }) {
+
+    const handleThemeToggle = () => {
+    setUseGreen(prev => !prev);
+  };
+
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
@@ -84,7 +97,13 @@ export default function Layout({ children } : {children : React.ReactNode}) {
               News
             </Typography>
             <FormControlLabel
-              control={<MaterialUISwitch sx={{ m: 1 }} defaultChecked />}
+              control={
+                <MaterialUISwitch
+                  sx={{ m: 1 }}
+                  checked={useGreen}
+                  onChange={handleThemeToggle}
+                />
+              }
               label="Display Mode"
             />
           </Toolbar>
@@ -93,7 +112,7 @@ export default function Layout({ children } : {children : React.ReactNode}) {
 
       <Box component={"main"} sx={{p: 0}}>{children}</Box>
 
-      <footer>this is my app and inly my</footer>
+      <footer>this is my app and only my</footer>
     </>
     
   );

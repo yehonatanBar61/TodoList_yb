@@ -130,20 +130,6 @@ export default function BasicRowList() {
                 Delete All
             </Button>
           </ButtonGroup>
-          {/* <ButtonGroup className='button-group-filter' variant="contained" aria-label="Basic button group">
-            <Button onClick={() => {
-              taskFiltering.clearFilters();
-              setFilteredTasks(tasks);
-            }}>All</Button>
-            <Button onClick={() => {
-              taskFiltering.setFilters(["Completed"]);
-              setFilteredTasks(taskFiltering.applyFilters(tasks));
-            }}>Completed</Button>
-            <Button onClick={() => {
-              taskFiltering.setFilters(["Uncompleted"]);
-              setFilteredTasks(taskFiltering.applyFilters(tasks));
-            }}>Not completed</Button>
-          </ButtonGroup> */}
           <Tabs
             value={tabValue}
             onChange={(e, newValue) => {
