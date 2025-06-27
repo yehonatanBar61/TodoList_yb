@@ -4,12 +4,15 @@ import type { Task } from "../../Objects/Task";
 import TitleInputDialog from "../Dialogs/TitleInputDialog";
 import { v4 as uuidv4 } from 'uuid';
 import AddIcon from '@mui/icons-material/Add';
+import { useAlert } from "../Notifications/UseAlert";
 
 
 export default function BasicAddTaskItem({addTask} : {addTask : (task : Task) => void}) {
   const [description, setDescription] = useState('');
   const [openDialog, setOpenDialog] = useState(false);
   const [title, setTitle] = useState('');
+
+  const { showAlert } = useAlert();
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
@@ -29,7 +32,12 @@ export default function BasicAddTaskItem({addTask} : {addTask : (task : Task) =>
       completed : false
     };
 
-    addTask(newTask);
+    if(newTask.title.length === 0){
+      showAlert("error", "Empty title is not allowd");
+    }else{
+      addTask(newTask);
+    }
+
     setDescription('');
     setTitle('');
     setOpenDialog(false);
@@ -44,7 +52,12 @@ export default function BasicAddTaskItem({addTask} : {addTask : (task : Task) =>
       <ListItemIcon>
       <Checkbox
         edge="start"
-        tabIndex={-1}
+        tabIndex={-1} 
+        sx={{
+          '&.Mui-disabled': {
+            color: "#497053",
+          },
+        }}
         disabled
       />
       </ListItemIcon>

@@ -13,6 +13,9 @@ import { Filtering } from '../../Logic/TaskFiltering/Filtering';
 import { FilterRepository } from '../../Logic/TaskFiltering/FilterRepository'
 import Consts from "../../Client/Consts";
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+
 
 const crud = new TaskService(Consts.REMOTE_HOST_URI);
 const taskFiltering = new Filtering(FilterRepository);
@@ -20,13 +23,14 @@ const taskFiltering = new Filtering(FilterRepository);
 export default function BasicRowList() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [filteredTasks, setFilteredTasks] = useState<Task[]>([]);
+  const [tabValue, setTabValue] = useState(0);
 
   const { showAlert } = useAlert();
 
   React.useEffect(() => {
     crud.getAllTasks()
       .then(setTasks)
-      .catch(() => showAlert("Error", "Failed to load tasks"));
+      .catch(() => showAlert("error", "Failed to load tasks"));
   }, []);
 
   React.useEffect(() => {
@@ -47,20 +51,20 @@ export default function BasicRowList() {
           task.id === taskId ? { ...task, completed: updatedCompleted } : task
         )
       );
-      showAlert("Success", "Task updated");
+      showAlert("success", "Task updated");
     } else {
-      showAlert("Error", "Failed to update task");
+      showAlert("error", "Failed to update task");
     }
   }
 
   const onDeleteAction = async (id : string) => {
     const result: boolean = await crud.deleteTask(id);
     if (result) {
-      showAlert('Success', 'Task deletion succeeded');
+      showAlert('success', 'Task deletion succeeded');
       const updatedTasks = tasks.filter(task => task.id !== id);
       setTasks(updatedTasks);
     } else {
-      showAlert('Error', 'Task deletion failed');
+      showAlert('error', 'Task deletion failed');
     }
   }
 
@@ -71,24 +75,24 @@ export default function BasicRowList() {
       description: desc,
     });
     if(result.id.length === 0){
-      showAlert('Error', 'Could not update Task')
+      showAlert('error', 'Could not update Task')
     }else{
       setTasks((prev) =>
         prev.map((task) =>
           task.id === id ? result : task
         )
       );
-      showAlert('Success', 'Updated Task successfuly');
+      showAlert('success', 'Updated Task successfuly');
     }
   }
 
   const addTask = async (task : Task) => {
     const result : Task = await crud.createTask(task);
     if(result.id.length !== 0){
-      showAlert("Success", "Adding task completed");
+      showAlert("success", "Adding task completed");
       setTasks([...tasks, task]);
     }else {
-      showAlert("Error", "Adding task Failed");
+      showAlert("error", "Adding task Failed");
     }
   }
 
@@ -107,9 +111,9 @@ export default function BasicRowList() {
     setTasks(updatedTasks);
 
     if (!succeeded) {
-      showAlert("Error", "Failed to delete all Tasks");
+      showAlert("error", "Failed to delete all Tasks");
     } else {
-      showAlert("Success", "Deletion succeeded");
+      showAlert("success", "Deletion succeeded");
     }
   };
 
@@ -126,7 +130,7 @@ export default function BasicRowList() {
                 Delete All
             </Button>
           </ButtonGroup>
-          <ButtonGroup className='button-group-filter' variant="contained" aria-label="Basic button group">
+          {/* <ButtonGroup className='button-group-filter' variant="contained" aria-label="Basic button group">
             <Button onClick={() => {
               taskFiltering.clearFilters();
               setFilteredTasks(tasks);
@@ -139,7 +143,31 @@ export default function BasicRowList() {
               taskFiltering.setFilters(["Uncompleted"]);
               setFilteredTasks(taskFiltering.applyFilters(tasks));
             }}>Not completed</Button>
-          </ButtonGroup>
+          </ButtonGroup> */}
+          <Tabs
+            value={tabValue}
+            onChange={(e, newValue) => {
+              setTabValue(newValue);
+
+              // Apply your filters
+              if (newValue === 0) {
+                taskFiltering.clearFilters();
+                setFilteredTasks(tasks);
+              } else if (newValue === 1) {
+                taskFiltering.setFilters(["Completed"]);
+                setFilteredTasks(taskFiltering.applyFilters(tasks));
+              } else if (newValue === 2) {
+                taskFiltering.setFilters(["Uncompleted"]);
+                setFilteredTasks(taskFiltering.applyFilters(tasks));
+              }
+            }}
+            aria-label="Task filter tabs"
+            variant="fullWidth" // or "scrollable" if you want it responsive
+          >
+            <Tab label="All" />
+            <Tab label="Completed" />
+            <Tab label="Uncompleted" />
+          </Tabs>
         </div>
         <List className='task-list'>
           {filteredTasks.map((task) => {

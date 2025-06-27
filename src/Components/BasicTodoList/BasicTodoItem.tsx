@@ -75,12 +75,16 @@ export default function BasicTodoItem({
               edge="start"
               checked={todo.completed}
               tabIndex={-1}
-              disableRipple
               onClick={(e) => {
                 e.stopPropagation();
                 toggle(todo.id);
               }}
-              inputProps={{ 'aria-labelledby': labelId }}
+              sx={{
+                color: (theme) => theme.palette.primary.main,
+                '&.Mui-checked': {
+                  color: (theme) => theme.palette.secondary.main,
+                },
+              }}  
             />
           </ListItemIcon>
         <ListItemButton role={undefined} dense onClick={handleOpen}>

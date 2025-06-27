@@ -2,7 +2,7 @@ import { Fade } from "@mui/material";
 import Alert from "@mui/material/Alert";
 import React, { createContext, useState, type ReactNode } from "react";
 
-type AlertType = 'Success' | 'Error' | 'Warning';
+type AlertType = 'success' | 'error' | 'warning';
 
 type Alert = {
     id: number;
@@ -77,6 +77,7 @@ export const AlertProvider: React.FC<AlertContextProvider> = ({ children }) => {
         <Fade in={true} timeout={500}>
           <Alert
             key={index}
+            severity={alert.type}
             onClose={() => hideAlert(index)}
           >
             <div>{alert.message}</div>
