@@ -1,4 +1,4 @@
-import { ButtonGroup, Button, Tabs, Tab } from "@mui/material";
+import { ButtonGroup, Button, Tabs, Tab, styled } from "@mui/material";
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import type { Filtering } from "../../Logic/TaskFiltering/Filtering";
 import type { Task } from "../../Objects/Task";
@@ -11,6 +11,10 @@ type props = {
     setFilteredTasks : (tasks : Task[]) => void;
     tasks : Task[];
 }
+
+const CustomTab = styled(Tab)(({ theme }) => ({
+  fontWeight: 'bold',
+}));
 
 export default function ListController({
     deleteAllTasks,
@@ -50,9 +54,9 @@ export default function ListController({
                 aria-label="Task filter tabs"
                 variant="fullWidth"
             >
-                <Tab label="All" />
-                <Tab label="Completed" />
-                <Tab label="Uncompleted" />
+                <CustomTab label="All" />
+                <CustomTab label="Completed" />
+                <CustomTab label="Uncompleted" />
             </Tabs>
         </div>
     );

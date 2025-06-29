@@ -2,12 +2,10 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 import '../Style/AppBarLayout.css';
 import { FormControlLabel, styled, Switch } from '@mui/material';
 
-const MaterialUISwitch = styled(Switch)(({ theme }) => ({
+const ModeSwitch = styled(Switch)(({ theme }) => ({
   width: 62,
   height: 34,
   padding: 7,
@@ -82,21 +80,12 @@ export default function Layout({
       <Box sx={{ flexGrow: 1 }}>
         <AppBar className='appBar' position="fixed">
           <Toolbar className="custom-toolbar">
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              sx={{ mr: 2 }}
-            >
-              <MenuIcon />
-            </IconButton>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              News
+              TodoList app
             </Typography>
             <FormControlLabel
               control={
-                <MaterialUISwitch
+                <ModeSwitch
                   sx={{ m: 1 }}
                   checked={useGreen}
                   onChange={handleThemeToggle}
@@ -110,7 +99,7 @@ export default function Layout({
 
       <Box component={"main"} sx={{p: 0}}>{children}</Box>
 
-      <footer>this is my app and only my</footer>
+      <footer>this is my app yes yes</footer>
     </>
     
   );
