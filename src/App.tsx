@@ -7,7 +7,7 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import { darkTheme, greenTheme } from "./Style/Themes/GreenTheem";
 
 function App() {
-  const [useGreen, setUseGreen] = useState(true);
+  const [useGreen, setUseGreen] = useState(false);
 
   return (
     <ThemeProvider theme={useGreen ? greenTheme : darkTheme}>

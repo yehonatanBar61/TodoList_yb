@@ -6,15 +6,11 @@ import type { Task } from '../../Objects/Task';
 import BasicTodoItem from './BasicTodoItem';
 import BasicAddTaskItem from './BasicAddTaskItem';
 import { useAlert } from '../Notifications/UseAlert';
-import ButtonGroup from '@mui/material/ButtonGroup';
-import { Button } from '@mui/material';
 import { useState } from 'react';
 import { Filtering } from '../../Logic/TaskFiltering/Filtering';
 import { FilterRepository } from '../../Logic/TaskFiltering/FilterRepository'
 import Consts from "../../Client/Consts";
-import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
+import ListController from './ListController';
 
 
 const crud = new TaskService(Consts.REMOTE_HOST_URI);
@@ -122,39 +118,16 @@ export default function BasicRowList() {
         <div className="content-headline">
           <h3>Tasks</h3>
         </div>
-        <div className="list-controll-pannel">
-          <ButtonGroup className='button-group-delete' variant="contained" aria-label="Basic button group">
-            <Button startIcon={<DeleteForeverOutlinedIcon />}  onClick={() => {
-              deleteAllTasks();
-            }}>
-                Delete All
-            </Button>
-          </ButtonGroup>
-          <Tabs
-            value={tabValue}
-            onChange={(e, newValue) => {
-              setTabValue(newValue);
 
-              // Apply your filters
-              if (newValue === 0) {
-                taskFiltering.clearFilters();
-                setFilteredTasks(tasks);
-              } else if (newValue === 1) {
-                taskFiltering.setFilters(["Completed"]);
-                setFilteredTasks(taskFiltering.applyFilters(tasks));
-              } else if (newValue === 2) {
-                taskFiltering.setFilters(["Uncompleted"]);
-                setFilteredTasks(taskFiltering.applyFilters(tasks));
-              }
-            }}
-            aria-label="Task filter tabs"
-            variant="fullWidth" // or "scrollable" if you want it responsive
-          >
-            <Tab label="All" />
-            <Tab label="Completed" />
-            <Tab label="Uncompleted" />
-          </Tabs>
-        </div>
+        <ListController 
+          deleteAllTasks={deleteAllTasks}
+          tabValue={tabValue}
+          setTabValue={setTabValue}
+          taskFiltering={taskFiltering}
+          setFilteredTasks={setFilteredTasks}
+          tasks={tasks}
+          />
+
         <List className='task-list'>
           {filteredTasks.map((task) => {
             return (

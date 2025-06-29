@@ -14,10 +14,10 @@ export default function BasicAddTaskItem({addTask} : {addTask : (task : Task) =>
 
   const { showAlert } = useAlert();
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      e.stopPropagation();
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      event.stopPropagation();
       if(description.trim()){
         setOpenDialog(true);
       }
