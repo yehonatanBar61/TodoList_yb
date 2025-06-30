@@ -15,7 +15,7 @@ export const darkTheme = createTheme({
     mode: 'light',
     primary: { main: '#0c7c0c', contrastText: '#fff' },
     secondary: { main: '#266b12', contrastText: '#fff' },
-    background: { default: '#f2f2f2', paper: '#0c7c0c' },
+    background: { default: '#f2f2f2', paper: '#fff' },
     text: { primary: '#000000' },
   },
 });

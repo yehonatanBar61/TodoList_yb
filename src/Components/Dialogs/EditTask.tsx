@@ -46,6 +46,7 @@ import type { Task } from "../../Objects/Task";
                         fullWidth
                         variant="standard"
                         onChange={(e) => setTitle(e.target.value)}
+                        inputProps={{ maxLength: 20 }}
                     />
                     <TextField
                         autoFocus
@@ -57,6 +58,7 @@ import type { Task } from "../../Objects/Task";
                         fullWidth
                         variant="standard"
                         onChange={(e) => setDescription(e.target.value)}
+                        inputProps={{ maxLength: 483 }}
                     />
                     </DialogContent>
                         <DialogActions>

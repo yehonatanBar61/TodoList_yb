@@ -66,13 +66,14 @@ export default function BasicAddTaskItem({addTask} : {addTask : (task : Task) =>
           <TextField className="addTask-txt-field"
             fullWidth
             multiline
-            maxRows={6}
+            maxRows={5}
             minRows={1}
             placeholder="Add a new task description..."
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             onKeyDown={handleKeyDown}
             variant="standard"
+            inputProps={{ maxLength: 483 }}
           />
             <IconButton
               onClick={() => description.trim() && setOpenDialog(true)}
