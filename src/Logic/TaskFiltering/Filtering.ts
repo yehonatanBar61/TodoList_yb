@@ -1,10 +1,9 @@
-import { Filter } from "@mui/icons-material";
 import type { Task } from "../../Objects/Task";
 
 export type Filter = {
     name: string;
-    operator: (tasks : Task[]) => Task[];
-}
+    operator: (tasks: Task[]) => Task[];
+};
 
 export class Filtering {
     private filters: Filter[] = [];

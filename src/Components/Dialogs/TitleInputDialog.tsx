@@ -30,7 +30,7 @@ export default function TitleInputDialog({
         <DialogTitle>Task Title</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            To submit the task, please enter task Title describing the task the best.
+            To submit the task, please enter task Title describing the task.
           </DialogContentText>
           <TextField
             autoFocus
@@ -47,6 +47,7 @@ export default function TitleInputDialog({
             onKeyDown={(e) => {
               if (e.key === "Enter") onConfirm();
             }}
+            inputProps={{ maxLength: 30 }}
           />
         </DialogContent>
         <DialogActions>

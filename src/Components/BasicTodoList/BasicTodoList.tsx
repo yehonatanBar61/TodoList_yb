@@ -126,12 +126,14 @@ export default function BasicRowList() {
           taskFiltering={taskFiltering}
           setFilteredTasks={setFilteredTasks}
           tasks={tasks}
-          />
+          filteredTasks={filteredTasks}
+        />
 
         <List className='task-list'>
           {filteredTasks.map((task) => {
             return (
-              <BasicTodoItem todo={task} toggle={toggleTaskComplition} onDeleteAction={onDeleteAction} onEditTask={onEditTask}/>
+              <BasicTodoItem key={task.id} todo={task} 
+              toggle={toggleTaskComplition} onDeleteAction={onDeleteAction} onEditTask={onEditTask}/>
             );
           })}
           <BasicAddTaskItem addTask={addTask}/>

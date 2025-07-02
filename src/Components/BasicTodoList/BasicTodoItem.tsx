@@ -37,6 +37,7 @@ import EditTask from "../Dialogs/EditTask";
     onDeleteAction,
     onEditTask,
   }: props) { 
+    
     const [openDescription, setOpenDescription] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
     const [title, setTitle] = useState(todo.title);

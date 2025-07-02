@@ -47,6 +47,7 @@ import type { Task } from "../../Objects/Task";
                         variant="standard"
                         onChange={(e) => setTitle(e.target.value)}
                         inputProps={{ maxLength: 20 }}
+                        value={title}
                     />
                     <TextField
                         autoFocus
@@ -59,11 +60,12 @@ import type { Task } from "../../Objects/Task";
                         variant="standard"
                         onChange={(e) => setDescription(e.target.value)}
                         inputProps={{ maxLength: 483 }}
+                        value={description}
                     />
                     </DialogContent>
                         <DialogActions>
-                        <Button onClick={handleEditTaskClose}>Cancel</Button>
-                        <Button onClick={onSubmitEditTask}>Submit</Button>
+                        <Button onClick={handleEditTaskClose} sx={{color: '#0A9528'}}>Cancel</Button>
+                        <Button onClick={onSubmitEditTask} sx={{color: '#0A9528'}}>Submit</Button>
                     </DialogActions>
                 </Dialog>
             </>
