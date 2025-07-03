@@ -11,12 +11,13 @@ import { Filtering } from '../../Logic/TaskFiltering/Filtering';
 import { FilterRepository } from '../../Logic/TaskFiltering/FilterRepository'
 import Consts from "../../Client/Consts";
 import ListController from './ListController';
-
+import type { JSX } from 'react/jsx-runtime';
+import { observer } from "mobx-react-lite";
 
 const crud = new TaskService(Consts.REMOTE_HOST_URI);
 const taskFiltering = new Filtering(FilterRepository);
 
-export default function BasicRowList() {
+export default observer(function BasicTodoList() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [filteredTasks, setFilteredTasks] = useState<Task[]>([]);
   const [tabValue, setTabValue] = useState(0);
@@ -141,3 +142,5 @@ export default function BasicRowList() {
       </section>
     );
   }
+
+

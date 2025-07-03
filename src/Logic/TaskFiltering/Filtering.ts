@@ -1,7 +1,7 @@
 import type { Task } from "../../Objects/Task";
 
 export type Filter = {
-    name: string;
+    name: string; // todo enum
     operator: (tasks: Task[]) => Task[];
 };
 
