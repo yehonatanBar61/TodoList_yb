@@ -1,4 +1,4 @@
-import { Box, Checkbox, IconButton, ListItem, ListItemButton, ListItemIcon, TextField } from "@mui/material";
+import { Box, Checkbox, IconButton, ListItem, ListItemButton, ListItemIcon, TextField, useMediaQuery } from "@mui/material";
 import { useState } from "react";
 import type { Task } from "../../Objects/Task";
 import TitleInputDialog from "../Dialogs/TitleInputDialog";
@@ -8,6 +8,9 @@ import { useAlert } from "../Notifications/UseAlert";
 
 
 export default function BasicAddTaskItem({addTask} : {addTask : (task : Task) => void}) {
+
+  const isSmall = useMediaQuery('(max-width:1025px)');
+  
   const [description, setDescription] = useState('');
   const [openDialog, setOpenDialog] = useState(false);
   const [title, setTitle] = useState('');
@@ -68,7 +71,7 @@ export default function BasicAddTaskItem({addTask} : {addTask : (task : Task) =>
             multiline
             maxRows={5}
             minRows={1}
-            placeholder="Add a new task description..."
+            placeholder={isSmall ? "Add description..." : "Add a new task description..."}
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             onKeyDown={handleKeyDown}
