@@ -1,4 +1,4 @@
-import TaskStore  from "./taskStore"
+import TaskStore  from "./TaskStore"
 
 const taskStore = new TaskStore();
 

@@ -1,9 +1,18 @@
+import { makeAutoObservable } from "mobx";
 import type { Task } from "../../Objects/Task";
 
 export type Filter = {
-    name: string; // todo enum
+    name: FilterName | string;
     operator: (tasks: Task[]) => Task[];
 };
+
+export const FilterName = {
+  Completed: "Completed",
+  Uncompleted: "Uncompleted",
+  ByTitle: "ByTitle",
+} as const;
+
+export type FilterName = keyof typeof FilterName;
 
 export class Filtering {
     private filters: Filter[] = [];
@@ -11,6 +20,7 @@ export class Filtering {
 
     constructor(repo : Map<string, Filter>){
         this.repository = repo;
+        makeAutoObservable(this);
     }
 
     addFilter(filter : Filter){

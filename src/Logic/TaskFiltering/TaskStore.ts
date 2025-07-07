@@ -3,34 +3,41 @@ import { TaskService } from "../../Client/TasksService";
 import type { Task } from "../../Objects/Task";
 import { Filtering } from "./Filtering";
 import { FilterRepository } from "./FilterRepository";
-import { makeAutoObservable } from "mobx";
-import { observer } from "mobx-react-lite";
+import { makeAutoObservable, observable } from "mobx";
 
 export default class TaskStore {
-    tasks: Task[] = [];
-
+    allTasks: Task[] = [];
     filtering = new Filtering(FilterRepository);
     crud = new TaskService(Consts.REMOTE_HOST_URI);
 
   constructor() {
     makeAutoObservable(this, {
-      filtering: false
+      filtering: observable.ref,
     });
   }
 
-  getTasks() : Task[]{
-    return this.tasks;
+  get tasks() : Task[]{
+    return this.allTasks;
   }
 
   setTasks(tasks : Task[]){
-    this.tasks = tasks;
+    this.allTasks = tasks;
   }
 
-  
+  addTask(task: Task){
+    this.allTasks.push(task);
+  }
 
   async loadTasks() {
     const tasks = await this.crud.getAllTasks();
-    this.tasks = tasks;
+    this.allTasks = tasks;
   }
 
+  get Filtering(): Filtering{
+    return this.filtering;
+  }
+
+  get filteredTasks(): Task[]{
+    return this.filtering.applyFilters(this.allTasks);
+  }
 }

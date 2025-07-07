@@ -1,10 +1,9 @@
-import { ButtonGroup, Button, Tabs, Tab, styled, Autocomplete, TextField, Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText } from "@mui/material";
+import { ButtonGroup, Button, Tabs, Tab, styled, Autocomplete, TextField, Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText, useMediaQuery, Select, FormControl, InputLabel, MenuItem, Box } from "@mui/material";
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
-import { Filtering } from "../../Logic/TaskFiltering/Filtering";
-import type { Task } from "../../Objects/Task";
 import "../../Style/BasicTodoList/ListController.css"
 import { useState } from "react";
 import taskStore from '../../Logic/TaskFiltering/TaskStoreInstance';
+import { FilterName } from "../../Logic/TaskFiltering/Filtering";
 
 type props = {
     deleteAllTasks : () => void;
@@ -22,53 +21,54 @@ export default function ListController({
     setTabValue,
     } : props){
 
+    const isSmall = useMediaQuery('(max-width:1025px)');
+    const isVerySmall = useMediaQuery('(max-width:600px)');
+    
     const [openConfirmDeteleAll, setOpenConfirmDeleteAll] = useState(false);
 
     const handleTabChange = (newValue : any) => {
         setTabValue(newValue);
         if (newValue === 0) {
-            taskFiltering.clearFilters();
-            setFilteredTasks(tasks);
+            taskStore.filtering.clearFilters();
         } else if (newValue === 1) {
-            taskFiltering.setFilters(["Completed"]);
-            setFilteredTasks(taskFiltering.applyFilters(tasks));
+            taskStore.filtering.setFilters([FilterName.Completed]);
         } else if (newValue === 2) {
-            taskFiltering.setFilters(["Uncompleted"]);
-            setFilteredTasks(taskFiltering.applyFilters(tasks));
+            taskStore.filtering.setFilters([FilterName.Uncompleted]);
         }
     }
 
     const onSearchBarChange = (value : any) => {
         if (typeof value === 'string' && value !== "") {
-            const filterName = `By_title_${value}`;
-            taskFiltering.addFilter({
+            const filterName = FilterName.ByTitle;
+            taskStore.filtering.addFilter({
                 name: filterName,
                 operator: (tasks) => tasks.filter(task => task.title.includes(value)),
-            });
-            setFilteredTasks(taskFiltering.applyFilters(tasks));
-            taskFiltering.removeFilterByName(filterName);
-        } else {
-            setFilteredTasks(taskFiltering.applyFilters(tasks));
+            });            
+        }else {
+            taskStore.Filtering.removeFilterByName(FilterName.ByTitle);
         }
     }
 
     return(
-        <div className="list-controll-pannel">
+        <Box className="list-controll-pannel" gap={1}>
             <ButtonGroup className='button-group-delete' variant="contained" aria-label="Basic button group">
-                <Button 
-                  sx={{
-                    backgroundColor: 'error.main',
-                    color: 'white',
-                    '&:hover': {
-                    backgroundColor: 'error.dark',
-                    },
-                }}
-                startIcon={<DeleteForeverOutlinedIcon />}  
-                onClick={() => {
-                    setOpenConfirmDeleteAll(true);
-                }}>
-                    Delete All
-                </Button>
+                {!isVerySmall && (
+                    <Button
+                    sx={{
+                        backgroundColor: 'error.main',
+                        color: 'white',
+                        '&:hover': {
+                        backgroundColor: 'error.dark',
+                        },
+                    }}
+                    startIcon={<DeleteForeverOutlinedIcon />}
+                    onClick={() => {
+                        setOpenConfirmDeleteAll(true);
+                    }}
+                    >
+                    {isSmall ? '' : 'Delete All'}
+                    </Button>
+                )}
             </ButtonGroup>
             <Autocomplete
                 className="search-bar"
@@ -76,24 +76,41 @@ export default function ListController({
                 freeSolo
                 clearOnEscape
                 size="small"
-                options={filteredTasks.map((task) => task.title)}
+                options={taskStore.filtering.applyFilters(taskStore.tasks).map((task) => task.title)}
                 onChange={(_, value) => {
                     onSearchBarChange(value);
                 }}
                 renderInput={(params) => <TextField {...params} label="Search tasks" />}
             />
+            {isSmall ? (
+            <FormControl fullWidth>
+                <InputLabel id="task-filter-label">Filter</InputLabel>
+                <Select
+                    labelId="task-filter-label"
+                    value={tabValue}
+                    label="Filter"
+                    onChange={(e) => handleTabChange(e.target.value)}
+                    size="small"
+                >
+                <MenuItem value={0}>All</MenuItem>
+                <MenuItem value={1}>Completed</MenuItem>
+                <MenuItem value={2}>Uncompleted</MenuItem>
+                </Select>
+            </FormControl>
+            ) : (
             <Tabs
                 value={tabValue}
                 onChange={(_, newValue) => {
-                    handleTabChange(newValue);
+                handleTabChange(newValue);
                 }}
                 aria-label="Task filter tabs"
                 variant="fullWidth"
             >
                 <CustomTab label="All" />
-                <CustomTab label="Completed" />
-                <CustomTab label="Uncompleted" />
+                <CustomTab label={FilterName.Completed} />
+                <CustomTab label={FilterName.Uncompleted} />
             </Tabs>
+            )}
 
             <Dialog
                 open={openConfirmDeteleAll}
@@ -111,6 +128,6 @@ export default function ListController({
                     }}>Confrim</Button>
                 </DialogActions>
             </Dialog>
-        </div>
+        </Box>
     );
 }

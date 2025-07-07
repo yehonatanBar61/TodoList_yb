@@ -1,13 +1,13 @@
-import type { Filter } from './Filtering';
+import { FilterName, type Filter } from './Filtering';
 import type { Task } from '../../Objects/Task';
 
 export let FilterRepository = new Map<string, Filter>([
-  ["Completed", {
-    name: "Completed",
+  [FilterName.Completed, {
+    name: FilterName.Completed,
     operator: (tasks: Task[]) => tasks.filter(task => task.completed),
   }],
-  ["Uncompleted", {
-    name: "Uncompleted",
+  [FilterName.Uncompleted, {
+    name: FilterName.Uncompleted,
     operator: (tasks: Task[]) => tasks.filter(task => !task.completed),
   }],
 ]);
