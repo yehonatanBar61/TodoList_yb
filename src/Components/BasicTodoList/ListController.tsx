@@ -4,15 +4,12 @@ import { Filtering } from "../../Logic/TaskFiltering/Filtering";
 import type { Task } from "../../Objects/Task";
 import "../../Style/BasicTodoList/ListController.css"
 import { useState } from "react";
+import taskStore from '../../Logic/TaskFiltering/TaskStoreInstance';
 
 type props = {
     deleteAllTasks : () => void;
     tabValue : number;
     setTabValue : (value : number) => void;
-    taskFiltering : Filtering;
-    setFilteredTasks : (tasks : Task[]) => void;
-    tasks : Task[];
-    filteredTasks : Task[];
 }
 
 const CustomTab = styled(Tab)(() => ({
@@ -23,10 +20,6 @@ export default function ListController({
     deleteAllTasks,
     tabValue,
     setTabValue,
-    taskFiltering,
-    setFilteredTasks,
-    tasks,
-    filteredTasks
     } : props){
 
     const [openConfirmDeteleAll, setOpenConfirmDeleteAll] = useState(false);

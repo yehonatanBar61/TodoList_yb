@@ -4,41 +4,33 @@ import type { Task } from "../../Objects/Task";
 import { Filtering } from "./Filtering";
 import { FilterRepository } from "./FilterRepository";
 import { makeAutoObservable } from "mobx";
+import { observer } from "mobx-react-lite";
 
-
-export class TaskStore {
+export default class TaskStore {
     tasks: Task[] = [];
-    tabValue = 0;
-    searchText = "";
 
     filtering = new Filtering(FilterRepository);
     crud = new TaskService(Consts.REMOTE_HOST_URI);
 
-    
   constructor() {
     makeAutoObservable(this, {
       filtering: false
     });
   }
 
+  getTasks() : Task[]{
+    return this.tasks;
+  }
+
+  setTasks(tasks : Task[]){
+    this.tasks = tasks;
+  }
+
+  
+
   async loadTasks() {
     const tasks = await this.crud.getAllTasks();
     this.tasks = tasks;
   }
-
-    setTabValue(value: number) {
-        this.tabValue = value;
-        this.applyTabFilter();
-    }
-
-    applyTabFilter() {
-        if (this.tabValue === 0) {
-            this.filtering.clearFilters();
-        } else if (this.tabValue === 1) {
-            this.filtering.setFilters(["Completed"]);
-        } else if (this.tabValue === 2) {
-            this.filtering.setFilters(["Uncompleted"]);
-        }
-    }
 
 }

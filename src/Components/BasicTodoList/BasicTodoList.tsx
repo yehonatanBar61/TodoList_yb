@@ -11,28 +11,24 @@ import { Filtering } from '../../Logic/TaskFiltering/Filtering';
 import { FilterRepository } from '../../Logic/TaskFiltering/FilterRepository'
 import Consts from "../../Client/Consts";
 import ListController from './ListController';
-import type { JSX } from 'react/jsx-runtime';
-import { observer } from "mobx-react-lite";
+import { observer } from 'mobx-react-lite';
+import taskStore from '../../Logic/TaskFiltering/TaskStoreInstance';
 
 const crud = new TaskService(Consts.REMOTE_HOST_URI);
 const taskFiltering = new Filtering(FilterRepository);
 
-export default observer(function BasicTodoList() {
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const [filteredTasks, setFilteredTasks] = useState<Task[]>([]);
+function BasicTodoList() {
   const [tabValue, setTabValue] = useState(0);
 
   const { showAlert } = useAlert();
 
   React.useEffect(() => {
-    crud.getAllTasks()
-      .then(setTasks)
-      .catch(() => showAlert("error", "Failed to load tasks"));
+    taskStore.loadTasks().catch(() => showAlert("error", "Failed to load tasks"))
   }, []);
 
-  React.useEffect(() => {
-    setFilteredTasks(taskFiltering.applyFilters(tasks));
-  }, [tasks]);
+  // React.useEffect(() => {
+  //   setFilteredTasks(taskFiltering.applyFilters(tasks));
+  // }, [tasks]);
 
   const toggleTaskComplition = async (taskId: string) : Promise<void> => {
     const task = tasks.find((t) => t.id === taskId);
@@ -58,8 +54,8 @@ export default observer(function BasicTodoList() {
     const result: boolean = await crud.deleteTask(id);
     if (result) {
       showAlert('success', 'Task deletion succeeded');
-      const updatedTasks = tasks.filter(task => task.id !== id);
-      setTasks(updatedTasks);
+      const updatedTasks = taskStore.getTasks().filter(task => task.id !== id);
+      taskStore.setTasks(updatedTasks);
     } else {
       showAlert('error', 'Task deletion failed');
     }
@@ -74,10 +70,7 @@ export default observer(function BasicTodoList() {
     if(result.id.length === 0){
       showAlert('error', 'Could not update Task')
     }else{
-      setTasks((prev) =>
-        prev.map((task) =>
-          task.id === id ? result : task
-        )
+      taskStore.setTasks(taskStore.getTasks().map((task) => task.id === id ? result : task)
       );
       showAlert('success', 'Updated Task successfuly');
     }
@@ -95,9 +88,9 @@ export default observer(function BasicTodoList() {
 
   const deleteAllTasks = async () => {
     let succeeded = true;
-    let updatedTasks = [...tasks];
+    let updatedTasks = [...taskStore.getTasks()];
 
-    for (const taskToDelete of tasks) {
+    for (const taskToDelete of taskStore.getTasks()) {
       const result = await crud.deleteTask(taskToDelete.id);
       if (!result) {
         succeeded = false;
@@ -105,7 +98,7 @@ export default observer(function BasicTodoList() {
       updatedTasks = updatedTasks.filter(task => task.id !== taskToDelete.id);
     }
 
-    setTasks(updatedTasks);
+    taskStore.setTasks(updatedTasks);
 
     if (!succeeded) {
       showAlert("error", "Failed to delete all Tasks");
@@ -125,16 +118,12 @@ export default observer(function BasicTodoList() {
           tabValue={tabValue}
           setTabValue={setTabValue}
           taskFiltering={taskFiltering}
-          setFilteredTasks={setFilteredTasks}
-          tasks={tasks}
-          filteredTasks={filteredTasks}
         />
 
         <List className='task-list'>
           {filteredTasks.map((task) => {
             return (
-              <BasicTodoItem key={task.id} todo={task} 
-              toggle={toggleTaskComplition} onDeleteAction={onDeleteAction} onEditTask={onEditTask}/>
+              <BasicTodoItem key={task.id} todo={task} toggle={toggleTaskComplition} onDeleteAction={onDeleteAction} onEditTask={onEditTask}/>
             );
           })}
           <BasicAddTaskItem addTask={addTask}/>
@@ -143,4 +132,4 @@ export default observer(function BasicTodoList() {
     );
   }
 
-
+  export default observer(BasicTodoList);
