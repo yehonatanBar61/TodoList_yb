@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import { Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 
 export type props = {
     open: boolean;
@@ -18,22 +18,18 @@ export type props = {
     } : props){
 
     return (
-        <Dialog
-            open={open}
-            onClose={onClose}
-        >
-            <DialogTitle>{title}</DialogTitle>
-            <DialogContent>
-                <DialogContentText>{message}</DialogContentText>
-            </DialogContent>
+        <Dialog open={open} onClose={onClose}>
+        {title && <DialogTitle>{title}</DialogTitle>}
+
+        <DialogContent>
+            {children}
+        </DialogContent>
+
+        {actions && (
             <DialogActions>
-                <Button onClick={onClose}>{cancelText}</Button>
-                {onConfirm && (
-                <Button onClick={onConfirm} autoFocus>
-                    {confirmText}
-                </Button>
-                )}
+            {actions}
             </DialogActions>
+        )}
         </Dialog>
     )
 }

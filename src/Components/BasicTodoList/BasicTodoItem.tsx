@@ -5,17 +5,16 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Dialog,
-  DialogTitle,
-  DialogContent,
   DialogContentText,
   styled,
+  Button,
 } from "@mui/material";
 import { useState } from "react";
 import DeleteIcon from '@mui/icons-material/Delete';
 import type { Task } from "../../Objects/Task";
 import { Edit } from "@mui/icons-material";
-import EditTask from "../Dialogs/EditTask";
+import EditTaskDialog from "../Dialogs/EditTaskDialog";
+import GenericDialog from "../Dialogs/GenericDialog";
 
   type props = {
     todo: Task;
@@ -42,6 +41,7 @@ import EditTask from "../Dialogs/EditTask";
     const [openEdit, setOpenEdit] = useState(false);
     const [title, setTitle] = useState(todo.title);
     const [description, setDescription] = useState(todo.description);
+    const [openConfirmDetele, setOpenConfirmDelete] = useState(false);
 
     const labelId = `checkbox-list-label-${todo.id}`;
 
@@ -67,7 +67,7 @@ import EditTask from "../Dialogs/EditTask";
               </IconButton>
               <IconButton
                 aria-label="delete"
-                onClick={() => onDeleteAction(todo.id)}
+                onClick={() => setOpenConfirmDelete(true)}
               >
                 <DeleteIcon fontSize="inherit" />
               </IconButton>
@@ -91,7 +91,7 @@ import EditTask from "../Dialogs/EditTask";
           </ListItemButton>
         </ListItem>
 
-        <EditTask
+        <EditTaskDialog
           openEdit={openEdit}
           todo={todo}
           title={title}
@@ -102,12 +102,42 @@ import EditTask from "../Dialogs/EditTask";
           handleEditTaskClose={handleEditTaskClose}
         />
 
-        <Dialog open={openDescription} onClose={handleClose}>
-          <DialogTitle>Task Description</DialogTitle>
-          <DialogContent>
-            <DialogContentText>{description || "No description provided."}</DialogContentText>
-          </DialogContent>
-        </Dialog>
+        <GenericDialog
+          open={openDescription}
+          title="Task Description"
+          onClose={handleClose}
+        >
+          <DialogContentText>
+            {description || "No description provided."}
+          </DialogContentText>
+        </GenericDialog>
+
+        <GenericDialog
+          open={openConfirmDetele}
+          title="Delete Task"
+          onClose={() => setOpenConfirmDelete(false)}
+          actions={
+            <>
+              <Button sx={{ color: "#0A9528" }} onClick={() => setOpenConfirmDelete(false)}>
+                Cancel
+              </Button>
+              <Button
+                sx={{ color: "#0A9528" }}
+                onClick={() => {
+                  onDeleteAction(todo.id);
+                  setOpenConfirmDelete(false);
+                }}
+              >
+                Confirm
+              </Button>
+            </>
+          }
+        >
+          <DialogContentText>
+            Are you sure you want to delete the task?
+          </DialogContentText>
+        </GenericDialog>
+
       </>
     );
   }

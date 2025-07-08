@@ -1,9 +1,10 @@
-import { ButtonGroup, Button, Tabs, Tab, styled, Autocomplete, TextField, Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText, useMediaQuery, Select, FormControl, InputLabel, MenuItem, Box } from "@mui/material";
+import { ButtonGroup, Button, Tabs, Tab, styled, Autocomplete, TextField, DialogContentText, useMediaQuery, Select, FormControl, InputLabel, MenuItem, Box } from "@mui/material";
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import "../../Style/BasicTodoList/ListController.css"
 import { useState } from "react";
 import taskStore from '../../Logic/TaskFiltering/TaskStoreInstance';
 import { FilterName } from "../../Logic/TaskFiltering/Filtering";
+import GenericDialog from "../Dialogs/GenericDialog";
 
 type props = {
     deleteAllTasks : () => void;
@@ -112,22 +113,31 @@ export default function ListController({
             </Tabs>
             )}
 
-            <Dialog
+            <GenericDialog
                 open={openConfirmDeteleAll}
+                title="Delete Tasks"
                 onClose={() => setOpenConfirmDeleteAll(false)}
-            >
-                <DialogTitle>Delete Tasks</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>Are you sure you want to delete all tasks?</DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button sx={{color: "#0A9528"}} onClick={() => setOpenConfirmDeleteAll(false)}>Cancel</Button>
-                    <Button sx={{color: "#0A9528"}} onClick={() => {
+                actions={
+                    <>
+                    <Button sx={{ color: "#0A9528" }} onClick={() => setOpenConfirmDeleteAll(false)}>
+                        Cancel
+                    </Button>
+                    <Button
+                        sx={{ color: "#0A9528" }}
+                        onClick={() => {
                         deleteAllTasks();
                         setOpenConfirmDeleteAll(false);
-                    }}>Confrim</Button>
-                </DialogActions>
-            </Dialog>
+                        }}
+                    >
+                        Confirm
+                    </Button>
+                    </>
+                }
+                >
+                <DialogContentText>
+                    Are you sure you want to delete all tasks?
+                </DialogContentText>
+            </GenericDialog>
         </Box>
     );
 }
