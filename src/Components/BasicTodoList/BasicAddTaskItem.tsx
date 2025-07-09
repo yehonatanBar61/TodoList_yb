@@ -1,4 +1,4 @@
-import { Box, Checkbox, IconButton, ListItem, ListItemButton, ListItemIcon, TextField, useMediaQuery } from "@mui/material";
+import { Box, Checkbox, IconButton, ListItem, ListItemButton, ListItemIcon, styled, TextField, useMediaQuery } from "@mui/material";
 import { useState } from "react";
 import type { Task } from "../../Objects/Task";
 import TitleInputDialog from "../Dialogs/TitleInputDialog";
@@ -6,6 +6,32 @@ import { v4 as uuidv4 } from 'uuid';
 import AddIcon from '@mui/icons-material/Add';
 import { useAlert } from "../Notifications/UseAlert";
 
+const isElectron = import.meta.env.VITE_IS_ELECTRON === 'true';
+
+export const StyledListItem = styled(ListItem)(({ theme }) =>
+  isElectron
+    ? {
+        backgroundColor: theme.palette.background.paper,
+        borderRadius: '12px',
+        marginBottom: '8px',
+        padding: '8px 12px',
+        color: theme.palette.text.primary,
+      }
+    : {}
+);
+
+export const StyledListItemButton = styled(ListItemButton)(({ theme }) =>
+  isElectron
+    ? {
+        borderRadius: '12px',
+        overflow: 'hidden',
+        '&:hover': {
+          backgroundColor: theme.palette.action.hover,
+        },
+        color: theme.palette.text.primary,
+      }
+    : {}
+);
 
 export default function BasicAddTaskItem({addTask} : {addTask : (task : Task) => void}) {
 
@@ -47,7 +73,7 @@ export default function BasicAddTaskItem({addTask} : {addTask : (task : Task) =>
   };
 
   return (
-    <ListItem 
+    <StyledListItem 
       disablePadding
       divider
       sx={{ alignItems: 'flex-start' }}
@@ -64,7 +90,7 @@ export default function BasicAddTaskItem({addTask} : {addTask : (task : Task) =>
         disabled
       />
       </ListItemIcon>
-      <ListItemButton role={undefined} dense>
+      <StyledListItemButton role={undefined} dense>
         <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
           <TextField className="addTask-txt-field"
             fullWidth
@@ -86,7 +112,7 @@ export default function BasicAddTaskItem({addTask} : {addTask : (task : Task) =>
               <AddIcon />
             </IconButton>
         </Box>
-      </ListItemButton>
+      </StyledListItemButton>
       <TitleInputDialog
           open={openDialog}
           title={title}
@@ -94,7 +120,7 @@ export default function BasicAddTaskItem({addTask} : {addTask : (task : Task) =>
           onCancel={() => setOpenDialog(false)}
           onConfirm={confirmAddTask}
       />
-    </ListItem>
+    </StyledListItem>
   );
 }
 

@@ -99,7 +99,7 @@ export default function Layout({
 
       <Box component={"main"} sx={{p: 0}}>{children}</Box>
 
-      <footer>this is my app yes yes</footer>
+      {/* <footer>this is my app yes yes</footer> */}
     </>
     
   );

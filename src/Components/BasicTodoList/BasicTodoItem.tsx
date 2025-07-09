@@ -1,8 +1,6 @@
 import {
   Checkbox,
   IconButton,
-  ListItem,
-  ListItemButton,
   ListItemIcon,
   ListItemText,
   DialogContentText,
@@ -15,6 +13,7 @@ import type { Task } from "../../Objects/Task";
 import { Edit } from "@mui/icons-material";
 import EditTaskDialog from "../Dialogs/EditTaskDialog";
 import GenericDialog from "../Dialogs/GenericDialog";
+import { StyledListItem, StyledListItemButton } from "./BasicAddTaskItem";
 
   type props = {
     todo: Task;
@@ -53,7 +52,7 @@ import GenericDialog from "../Dialogs/GenericDialog";
 
     return (
       <>
-        <ListItem
+        <StyledListItem
           key={todo.id}
           disablePadding
           divider
@@ -86,10 +85,10 @@ import GenericDialog from "../Dialogs/GenericDialog";
               }}
             />
             </ListItemIcon>
-          <ListItemButton role={undefined} dense onClick={handleOpen}>
+          <StyledListItemButton role={undefined} dense onClick={handleOpen}>
             <ListItemText id={labelId} primary={title} />
-          </ListItemButton>
-        </ListItem>
+          </StyledListItemButton>
+        </StyledListItem>
 
         <EditTaskDialog
           openEdit={openEdit}
